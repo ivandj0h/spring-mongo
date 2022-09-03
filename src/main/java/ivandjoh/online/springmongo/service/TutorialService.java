@@ -10,4 +10,8 @@ public interface TutorialService {
     ResponseEntity<Tutorial> createTutorial(Tutorial tutorial);
 
     ResponseEntity<List<Tutorial>> getAllTutorials(String title);
+
+    ResponseEntity<Tutorial> getTutorialById(String id);
+
+    ResponseEntity<List<Tutorial>> findByPublished();
 }

@@ -19,7 +19,7 @@ public class TutorialController {
     public ResponseEntity<Tutorial> createTutorial(
             @RequestBody Tutorial tutorial
     ) {
-return tutorialService.createTutorial(tutorial);
+        return tutorialService.createTutorial(tutorial);
     }
 
     @GetMapping("/tutorials")
@@ -29,5 +29,15 @@ return tutorialService.createTutorial(tutorial);
         return tutorialService.getAllTutorials(title);
     }
 
+    @GetMapping("/tutorial/{id}")
+    public ResponseEntity<Tutorial> getTutorialById(
+            @PathVariable("id") String id
+    ) {
+        return tutorialService.getTutorialById(id);
+    }
 
+    @GetMapping("/tutorials/published")
+    public ResponseEntity<List<Tutorial>> findByPublished() {
+        return tutorialService.findByPublished();
+    }
 }
