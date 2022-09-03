@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -46,6 +47,30 @@ public class TutorialServiceImpl implements TutorialService {
         } catch (Exception e) {
             log.error("Error creating tutorial: {}", e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Tutorial> getTutorialById(String id) {
+        Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+        log.info("Returning tutorials {}", tutorialData);
+        return tutorialData
+                .map(tutorial -> new ResponseEntity<>(tutorial, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public ResponseEntity<List<Tutorial>> findByPublished() {
+        try {
+            List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
+            if (tutorials.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            log.info("Returning tutorials {}", tutorials);
+            return new ResponseEntity<>(tutorials, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error creating tutorial: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
